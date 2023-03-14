@@ -22,7 +22,7 @@ fn html_to_tantivy_at_path(p: impl AsRef<Path>, schema: &Schema) -> Result<Docum
     let title_selector = scraper::Selector::parse("div.header__title h1.heading--page")?;
     let title = scraped
         .select(&title_selector)
-        .map(|x| x.inner_html())
+        .map(|x| x.text().collect::<Vec<_>>().join("\n").trim().to_string())
         .next()
         .ok_or(ProgramError::Unexpected(format!(
             "no title in {}",
