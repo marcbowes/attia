@@ -17,7 +17,6 @@ async-trait = "0.1.66"
 sha2 = "0.10.6"
 base16ct = { version = "0.2.0", features = ["alloc"] }
 tantivy = "0.19.2"
-tempdir = "0.3.7"
 scraper = "0.15.0"
 clap = { version = "4.1.8", features = ["derive"] }
 toml = "0.7.3"

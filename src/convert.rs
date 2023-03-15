@@ -1,5 +1,5 @@
-use std::fs;
 use std::path::Path;
+use std::{fs, time::SystemTime};
 
 use crate::{
     cache::HtmlFile,
@@ -9,9 +9,18 @@ use crate::{
 
 use tantivy::schema::*;
 
-pub fn html_to_tantivy(schema: &Schema, config: &Config) -> Result<Vec<Document>> {
-    fs::read_dir(&config.data_dir.join("html-cache"))?
-        .map(|p| html_to_tantivy_at_path(&p?.path(), &schema))
+pub fn html_to_tantivy(
+    schema: &Schema,
+    config: &Config,
+    newer_than: SystemTime,
+) -> Result<Vec<Document>> {
+    let mut paths = fs::read_dir(&config.data_dir.join("html-cache"))?
+        .map(|r| Ok(r?.path()))
+        .collect::<Result<Vec<_>>>()?;
+    paths.retain(|p| p.metadata().unwrap().modified().unwrap() >= newer_than);
+    paths
+        .iter()
+        .map(|p| html_to_tantivy_at_path(p, &schema))
         .collect::<Result<Vec<_>>>()
 }
 

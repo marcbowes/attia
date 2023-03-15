@@ -1,6 +1,7 @@
 use clap::Parser;
 
 use config::Config;
+use search::Search;
 
 mod cache;
 mod config;
@@ -22,9 +23,10 @@ async fn main() -> error::Result<()> {
     if args.download {
         download::run(&config).await?;
     }
-    let schema = search::schema();
-    let tantivies = convert::html_to_tantivy(&schema, &config)?;
-    let _ = search::index_then_search(&schema, tantivies, &args.query)?;
+    let mut search = Search::new(config.clone())?;
+    let tantivies = convert::html_to_tantivy(&search.schema, &config, search.touch_mtime())?;
+    search.update(tantivies)?;
+    search.query(&args.query)?;
     Ok(())
 }
 

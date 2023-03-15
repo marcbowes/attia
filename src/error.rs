@@ -47,6 +47,11 @@ pub enum ProgramError {
         #[from]
         source: tantivy::query::QueryParserError,
     },
+    #[error(transparent)]
+    TantivyDirectoryError {
+        #[from]
+        source: tantivy::directory::error::OpenDirectoryError,
+    },
 }
 
 pub type Result<T> = std::result::Result<T, ProgramError>;

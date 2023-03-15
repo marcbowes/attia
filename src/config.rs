@@ -6,7 +6,7 @@ use std::{fs, path::PathBuf};
 use crate::error::Result;
 
 // TODO add some sort of keychain support
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Config {
     pub username: String,
     pub password: String,

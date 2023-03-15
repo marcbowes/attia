@@ -42,5 +42,4 @@ which will only download new notes.
 
 - Remove the need to do the WebDriver stuff. A normal HTML client is probably
   sufficient. I mostly just tried it for fun.
-- Incrementally maintain the index (currently in a temp dir)
 - grep for TODO for more stuff
